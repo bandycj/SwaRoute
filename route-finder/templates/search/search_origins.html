@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from 'macros.html' import airportList %}
+
+{% block title %}
+    Origin
+{% endblock %}
+
+{% block header %}
+    <h1>Origin</h1>
+{% endblock %}
+
+{% block content %}
+    {{ airportList("/search/", airport_list) }}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}
+    Update Result
+{% endblock %}
+
+{% block header %}
+    <h1>Update Result</h1>
+{% endblock %}
+
+{% block content %}
+    {% if flights is defined %}
+        <h1>Total: {{ flights|length }}</h1>
+        <ul id="searchList" data-role="listview" data-theme="b" data-filter="true" data-filter-placeholder="Search..." data-inset="true">
+            {% for flight in flights %}
+                <li data-filtertext="{{ flight.iataCode }}">
+                    {% for val in flight %}
+                        {{ flight[val] }}
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        No Updates Occured.
+    {% endif %}
+{% endblock %}

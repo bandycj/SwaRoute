@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Date
+{% endblock %}
+
+{% block header %}
+    <h1>Date</h1>
+{% endblock %}
+
+{% block content %}
+    {% if origin is defined and destination is defined %}
+        <p><label for="origin">Origin: </label><a id="origin" href="/search/" data-role="button">{{ origin }}</a><p>
+        <p><label for="destination">Destination: </label><a id="destination" href="/search/{{ origin }}" data-role="button">{{ destination }}</a><p>
+        <form action="/search/{{ origin }}/{{ destination }}/result" method="post">
+            <p><label for="slider-0">Max hops:</label><input type="range" name="hops" id="slider-0" value="2" min="1"
+                                                             max="{{ max_hops }}"/></p>
+
+            <p><label for="date">Date:</label><input id="date" type="text" data-role="datebox"
+                                                     data-options='{"mode":"calbox","afterToday": true, "useInline": true, "hideInput": true}'/>
+            </p>
+            <input type="submit" value="Search"/>
+        </form>
+    {% else %}
+        <p><a id="search" href="javascript:history.back(-1)" data-role="button">Select Origin</a></p>
+    {% endif %}
+{% endblock %}

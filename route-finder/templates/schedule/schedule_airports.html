@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% from 'macros.html' import airportList %}
+{% block title %}
+    Refresh Airport
+{% endblock %}
+
+{% block header %}
+    <h1>Refresh Airport</h1>
+{% endblock %}
+
+{% block content %}
+    {% if airports is defined %}
+        {{ airportList(airports, "/schedule/airports/") }}
+    {% endif %}
+{% endblock %}
+
+
+

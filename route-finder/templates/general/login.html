@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% from "macros.html" import render_field %}
+
+{% block title %}Login{% endblock %}
+{% block nav_home %}active{% endblock %}
+
+{% block content %}
+    <h2>Login</h2>
+
+    <form method="post" action="/login">
+        <dl>
+            {{ render_field(form.openid) }}
+        </dl>
+        {{ render_field(form.next) }}
+        <input type="submit" value="Login">
+        <ul>
+            <li><a href=?provider=aol>AOL</a>
+            <li><a href=?provider=google>Google</a>
+            <li><a href=?provider=yahoo>Yahoo</a>
+        </ul>
+    </form>
+{% endblock %}

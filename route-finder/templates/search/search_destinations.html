@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% from 'macros.html' import airportList %}
+
+{% block title %}
+    Destination
+{% endblock %}
+
+{% block header %}
+    <h1>Destination</h1>
+{% endblock %}
+
+{% block content %}
+    {% if origin is defined %}
+        <p><label for="origin">Origin: </label><a id="origin" href="/search/" data-role="button">{{ origin }}</a><p>
+        {{ airportList("/search/"+origin+"/", airport_list) }}
+    {% else %}
+        <p><a id="search" href="javascript:history.back(-1)" data-role="button">Select Origin</a></p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns="">
+<head>
+    <title>{% block title %}{% endblock %} ~ Router</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/static/favicon.ico"/>
+    {% if debug == False %}
+        <link rel="stylesheet" href="/static/jquery.mobile-1.1.0/jquery.mobile-1.1.0.min.css"/>
+        <link rel="stylesheet" type="text/css" href="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.min.css"/>
+
+        <script type="text/javascript" src="/static/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="/static/jquery.mobile-1.1.0/jquery.mobile-1.1.0.min.js"></script>
+        <script type="text/javascript" src="/static/jquery.mobile-1.1.0/jqm-datebox-1.1.0.comp.calbox.js"></script>
+        <script type="text/javascript" src="/static/jquery.mobile-1.1.0/jqm-datebox-1.1.0.comp.calbox.min.js"></script>
+        <style type="text/css">
+            #searchList .ui-btn-inner {
+                text-align: center;
+                margin: 0 auto;
+            }
+        </style>
+    {% endif %}
+</head>
+
+<body>
+    <div data-role="header">
+        {% block header %}
+        {% endblock %}
+    </div>
+    {% for message in get_flashed_messages() %}
+        <p class=message>{{ message }}
+    {% endfor %}
+    {% if debug == True %}
+        <div>
+            debug mode
+        </div>
+    {% endif %}
+    <!-- /header -->
+    <div id="content" data-role="content" data-theme="b">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+<footer>
+    <p style="text-align: center; font-size:50%">Copyright © 2012 Chris Bandy, Licensed under the <a
+            href="http://www.opensource.org/licenses/CDDL-1.0/">Common Development and Distribution License
+        (CDDL-1.0)</a></p>
+</footer>
+</html>

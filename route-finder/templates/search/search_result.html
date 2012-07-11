@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% from 'macros.html' import airportList %}
+
+{% block title %}
+    Results
+{% endblock %}
+
+{% block header %}
+    <h1>Results</h1>
+{% endblock %}
+
+{% block content %}
+    {% if flights is defined %}
+        {{ airportList("", flights) }}
+    {% endif %}
+{% endblock %}

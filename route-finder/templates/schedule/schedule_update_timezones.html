@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Update Timezones
+{% endblock %}
+
+{% block header %}
+    <h1>Update Timezones</h1>
+{% endblock %}
+
+{% block content %}
+    {% if timezones is defined %}
+        <h1>Total: {{ timezones|length }}</h1>
+        <ul id="searchList" data-role="listview" data-theme="b" data-filter="true" data-filter-placeholder="Search..." data-inset="true">
+            {% for timezone in timezones %}
+                <li data-filtertext="{{ timezone.iataCode }}">
+                    {% for val in timezone %}
+                        {{ timezone[val] }}
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        No Updates Occured.
+    {% endif %}
+{% endblock %}
+
+
+

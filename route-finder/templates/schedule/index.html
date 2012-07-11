@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}
+    Route Finder
+{% endblock %}
+
+{% block header %}
+    <h1>Route Finder</h1>
+{% endblock %}
+
+{% block content %}
+    <p><a id="airports" href="/schedule/update_airports" data-role="button">Refresh Airports</a></p>
+    <p><a id="schedule" href="/schedule/airports" data-role="button">Refresh Schedules</a></p>
+    <p><a id="timezones" href="/schedule/update_timezones" data-role="button">Refresh Timezones</a></p>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% from 'macros.html' import airportList %}
+
+{% block title %}
+    Update Schedule Data
+{% endblock %}
+
+{% block header %}
+    <h1>Update Schedule Data</h1>
+{% endblock %}
+
+{% block content %}
+    {% if iataCode is defined %}
+        <p>
+            <label for="iataCode">Airport: </label>
+            <a id="iataCode" href="/schedule/airports/" data-role="button">{{ iataCode }}</a>
+        <p>
+        <form action="/schedule/airports/{{ iataCode }}/update" method="post">
+            <input type="submit" value="Update"/>
+        </form>
+    {% else %}
+        <p><a id="search" href="javascript:history.back(-1)" data-role="button">Select Destinatio</a></p>
+    {% endif %}
+{% endblock %}
