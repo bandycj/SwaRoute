@@ -1,6 +1,6 @@
 import urllib2
 from flask.helpers import json
-from route_finder.views.login import mod, oauth, post_authorization, authorized, token_getter
+from SwaRoute.swa_route.views.login import mod, oauth, post_authorization, authorized, token_getter
 from werkzeug.utils import redirect
 
 __author__ = 'e83800'

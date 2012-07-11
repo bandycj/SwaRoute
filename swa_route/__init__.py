@@ -8,16 +8,14 @@ from flask import Flask, render_template
 app = Flask(__name__)
 app.config.from_object('websiteconfig')
 
-import database
-
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 principals = Principal(app)
 user_permission = Permission(RoleNeed('user'))
 
-from route_finder import utils
-from route_finder.views import general, login
+from SwaRoute.swa_route import utils
+from SwaRoute.swa_route.views import general, login
 
 app.register_blueprint(login.mod)
 app.register_blueprint(general.mod)

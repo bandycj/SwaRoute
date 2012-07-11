@@ -5,7 +5,7 @@ __author__ = 'Chris Bandy'
 from mongoengine import Document, connect
 from mongoengine.fields import StringField, ReferenceField, DateTimeField, IntField
 
-from route_finder import app
+from swa_route import app
 
 model = connect(app.config['MONGODB_URL'])
 

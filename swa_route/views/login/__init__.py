@@ -1,8 +1,3 @@
-from __builtin__ import getattr
-from exceptions import ImportError
-import importlib
-import os
-import pkgutil
 from flask import session
 from flask.blueprints import Blueprint
 from flask.globals import current_app, request
@@ -10,16 +5,36 @@ from flask.helpers import url_for, flash
 from flask.wrappers import Response
 from flaskext.oauth import OAuth
 from flask_principal import identity_changed, AnonymousIdentity, Identity
-from route_finder import login_manager
-from route_finder.database import User
+from swa_route import login_manager
+from swa_route.database import User
 from werkzeug.utils import redirect
 
 __author__ = 'Chris Bandy'
 mod = Blueprint('login', __name__, url_prefix="/login")
 oauth = OAuth()
 
-[importlib.import_module(name) for _, name, _ in pkgutil.iter_modules([os.path.dirname(__file__)])]
+def token_getter():
+    return session.get('oauth_token')
 
+def authorized(resp, method):
+    next_url = request.args.get('next') or url_for('general.index')
+    if resp is None:
+        flash(u'You denied the request to sign in.')
+        return False, next_url
+
+    session['oauth_method'] = method
+    return True, next_url
+
+def post_authorization(token, oauth_id):
+    u = User.objects.get_or_create(token=token, userid=oauth_id)
+    u.save()
+    identity_changed.send(current_app._get_current_object(), identity=Identity(session['oauth_id']))
+
+#[importlib.import_module(name) for _, name, _ in pkgutil.iter_modules([os.path.dirname(__file__)])]
+import oauth_google as google
+import oauth_facebook as facebook
+import oauth_twitter as twitter
+oauth_methods = (google, facebook, twitter)
 
 @mod.route('/')
 def login():
@@ -33,11 +48,14 @@ def login():
 
 @mod.route('/<method>')
 def method(method):
-    try:
-        package = "oauth_" + method
-        auth_service = getattr(importlib.import_module("auth_service", package), "auth_service")
+    auth_service = None
+    for auth_method in auth_methods:
+        if method == auth_method.method:
+            auth_service = auth_method.auth_service
+
+    if auth_service is not None:
         return auth_service.authorize(callback=url_for('login.' + method + '_authorized', _external=True))
-    except ImportError:
+    else:
         flash("Unknown login method.")
         return redirect(url_for("login.login"))
 
@@ -67,20 +85,3 @@ def unauthorized():
 @login_manager.user_loader
 def load_user(userid):
     return User.get(userid)
-
-def token_getter():
-    return session.get('oauth_token')
-
-def authorized(resp, method):
-    next_url = request.args.get('next') or url_for('general.index')
-    if resp is None:
-        flash(u'You denied the request to sign in.')
-        return False, next_url
-
-    session['oauth_method'] = method
-    return True, next_url
-
-def post_authorization(token, oauth_id):
-    u = User.objects.get_or_create(token=token, userid=oauth_id)
-    u.save()
-    identity_changed.send(current_app._get_current_object(), identity=Identity(session['oauth_id']))
