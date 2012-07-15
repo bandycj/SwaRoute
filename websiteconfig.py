@@ -10,6 +10,10 @@ DEBUG = True
 
 SECRET_KEY = 'testkey'
 ADMINS = frozenset(["wiper"])
-MONGODB_URL = 'mongodb://192.168.0.5/default'
+
+MONGO_HOST="wiper-linux"
+MONGO_PORT=27017
+MONGO_USERNAME="swaroute"
+MONGO_PASSWORD="4805fm3465"
 
 del os

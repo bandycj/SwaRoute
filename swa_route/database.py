@@ -1,18 +1,22 @@
-from __builtin__ import property
-
 __author__ = 'Chris Bandy'
 
-from mongoengine import Document, connect
+from flask_mongoengine import  Document
+from mongoengine.connection import connect
 from mongoengine.fields import StringField, ReferenceField, DateTimeField, IntField
-
 from swa_route import app
 
-model = connect(app.config['MONGODB_URL'])
+model = connect('swa_route',
+    host=app.config['MONGO_HOST'],
+    port=app.config['MONGO_PORT'],
+    username=app.config['MONGO_USERNAME'],
+    password=app.config['MONGO_PASSWORD']
+)
 
 
 class User(Document):
     token = StringField(max_length=200, required=True, unique=True)
-    userid = StringField(max_length=200, required=True)
+    userid = StringField(max_length=200, required=True, unique_with="method")
+    method = StringField(max_length=200, required=True, unique_with="userid")
 
     @property
     def is_admin(self):
@@ -51,11 +55,12 @@ class Airport(Document):
 class Flight(Document):
     origin = ReferenceField(Airport, required=True)
     destination = ReferenceField(Airport, required=True, unique_with='origin')
-    flightNum =IntField(required=True, unique_with='origin')
+    flightNum = IntField(required=True, unique_with='origin')
     fromDate = DateTimeField(required=True, unique_with='origin')
     toDate = DateTimeField(required=True, unique_with='origin')
     ska = DateTimeField(required=True, unique_with='origin')
     skd = DateTimeField(required=True, unique_with='origin')
 
     def __unicode__(self):
-        return self.origin['iataCode'] + self.destination['iataCode'] + str(self.flightNum) + str(fromDate) + str(toDate)
+        return self.origin['iataCode'] + self.destination['iataCode'] + str(self.flightNum) + str(fromDate) + str(
+            toDate)

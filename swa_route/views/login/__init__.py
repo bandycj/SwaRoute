@@ -13,22 +13,6 @@ __author__ = 'Chris Bandy'
 mod = Blueprint('login', __name__, url_prefix="/login")
 oauth = OAuth()
 
-def token_getter():
-    return session.get('oauth_token')
-
-def authorized(resp, method):
-    next_url = request.args.get('next') or url_for('general.index')
-    if resp is None:
-        flash(u'You denied the request to sign in.')
-        return False, next_url
-
-    session['oauth_method'] = method
-    return True, next_url
-
-def post_authorization(token, oauth_id):
-    u = User.objects.get_or_create(token=token, userid=oauth_id)
-    u.save()
-    identity_changed.send(current_app._get_current_object(), identity=Identity(session['oauth_id']))
 
 #[importlib.import_module(name) for _, name, _ in pkgutil.iter_modules([os.path.dirname(__file__)])]
 import oauth_google as google
@@ -49,9 +33,9 @@ def login():
 @mod.route('/<method>')
 def method(method):
     auth_service = None
-    for auth_method in auth_methods:
-        if method == auth_method.method:
-            auth_service = auth_method.auth_service
+    for oauth_method in oauth_methods:
+        if method == oauth_method.method:
+            auth_service = oauth_method.auth_service
 
     if auth_service is not None:
         return auth_service.authorize(callback=url_for('login.' + method + '_authorized', _external=True))

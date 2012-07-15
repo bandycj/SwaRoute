@@ -1,6 +1,7 @@
 import urllib2
 from flask.helpers import json
-from SwaRoute.swa_route.views.login import mod, oauth, post_authorization, authorized, token_getter
+from . import mod, oauth
+from .login_utils import authorized, post_authorization, token_getter
 from werkzeug.utils import redirect
 
 __author__ = 'e83800'
@@ -27,7 +28,7 @@ def google_authorized(resp):
     if authorized:
         url = auth_service.base_url + "?access_token=" + resp['access_token']
         userinfo = json.load(urllib2.urlopen(url))
-        post_authorization(resp['access_token'], userinfo['email'])
+        post_authorization(resp['access_token'], userinfo['email'], method)
 
     return redirect(next_url)
 

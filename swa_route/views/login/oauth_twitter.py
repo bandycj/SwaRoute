@@ -1,9 +1,11 @@
-from route_finder.views.login import mod, oauth, post_authorization, authorized, token_getter
+from . import mod, oauth
+from .login_utils import authorized, post_authorization, token_getter
 from werkzeug.utils import redirect
 
 __author__ = 'e83800'
 
 method = "twitter"
+
 auth_service = oauth.remote_app(method,
     base_url='http://api.twitter.com/1/',
     request_token_url='http://api.twitter.com/oauth/request_token',
@@ -19,7 +21,7 @@ def twitter_authorized(resp):
     authed, next_url = authorized(resp, method)
 
     if authorized:
-        post_authorization(resp['oauth_token'], resp['screen_name'])
+        post_authorization(resp['oauth_token'], resp['screen_name'], method)
 
     return redirect(next_url)
 

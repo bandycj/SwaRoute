@@ -1,4 +1,6 @@
-from route_finder.views.login import mod, oauth, post_authorization, authorized, token_getter
+from . import mod, oauth
+from pprint import pprint
+from .login_utils import authorized, post_authorization, token_getter
 from werkzeug.utils import redirect
 
 __author__ = 'e83800'
@@ -21,8 +23,9 @@ def facebook_authorized(resp):
     authed, next_url = authorized(resp, method)
 
     if authed:
+        pprint(resp)
         userinfo = auth_service.get('/me')
-        post_authorization(resp['access_token'], userinfo.data['name'])
+        post_authorization(resp['access_token'], userinfo.data['name'], method)
 
     return redirect(next_url)
 

@@ -1,5 +1,7 @@
 *.py[co]
 
+websiteconfig.py
+
 # Packages
 *.egg
 *.egg-info
