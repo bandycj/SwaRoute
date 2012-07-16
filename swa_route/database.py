@@ -2,25 +2,27 @@ __author__ = 'Chris Bandy'
 
 from flask_mongoengine import  Document
 from mongoengine.connection import connect
-from mongoengine.fields import StringField, ReferenceField, DateTimeField, IntField
-from swa_route import app
+from mongoengine.fields import StringField, ReferenceField, DateTimeField, IntField, BooleanField
 
-model = connect('swa_route',
-    host=app.config['MONGO_HOST'],
-    port=app.config['MONGO_PORT'],
-    username=app.config['MONGO_USERNAME'],
-    password=app.config['MONGO_PASSWORD']
-)
+
+def init_db(app):
+    connect('swa_route',
+        host=app.config['MONGO_HOST'],
+        port=app.config['MONGO_PORT'],
+        username=app.config['MONGO_USERNAME'],
+        password=app.config['MONGO_PASSWORD']
+    )
 
 
 class User(Document):
     token = StringField(max_length=200, required=True, unique=True)
     userid = StringField(max_length=200, required=True, unique_with="method")
     method = StringField(max_length=200, required=True, unique_with="userid")
+    admin = BooleanField(default=False)
 
     @property
     def is_admin(self):
-        return self.openid in app.config['ADMINS']
+        return self.admin
 
     def is_user(self):
         if self.userid:

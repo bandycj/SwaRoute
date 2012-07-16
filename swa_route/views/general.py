@@ -15,4 +15,4 @@ def index():
 #        return redirect(url_for("login.login"))
 #    else:
     return Response('Hello %s, signed in with %s. <a href="%s">Logout?</a>' % (
-        session['oauth_id'], session['oauth_method'], url_for("logout")))
+        session['oauth_id'], session['oauth_method'], url_for("login.logout")))
